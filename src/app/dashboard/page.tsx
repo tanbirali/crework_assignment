@@ -30,10 +30,10 @@ import { title } from "process";
 import KanbanBoard from "@/components/kanbanBoard";
 import TaskModal from "@/components/taskModal";
 import { useTaskModal } from "../../context/modal";
-import ProtectedRoute from "@/util/protectedRoute";
 import { useAuth } from "@/context/auth";
 import { DragDropContext } from "@hello-pangea/dnd";
 import { useKanbanBoard } from "@/context/kanbanBoard";
+import { useRouter } from "next/navigation";
 
 const Dashboard = () => {
   const cardData = [
@@ -62,6 +62,10 @@ const Dashboard = () => {
 
   const { open, showDrawer } = useTaskModal();
   const { user, logout } = useAuth();
+  const router = useRouter();
+  if (!user) {
+    router.push("/");
+  }
   const { moveCard, kanbanBoardData } = useKanbanBoard();
   const handleDragEnd = (result: any) => {
     const { destination, source, draggableId } = result;
@@ -232,4 +236,4 @@ const Dashboard = () => {
   );
 };
 
-export default ProtectedRoute(Dashboard);
+export default Dashboard;
